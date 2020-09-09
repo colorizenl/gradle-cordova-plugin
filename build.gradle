@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    
+    dependencies {
+        classpath "com.gradle.publish:plugin-publish-plugin:0.12.0"
+    }
+}
+
+apply plugin: "java-gradle-plugin"
+apply plugin: "com.gradle.plugin-publish"
+apply plugin: "jacoco"
+
+group = "nl.colorize"
+version = "2020.1.6"
+sourceCompatibility = "11"
+targetCompatibility = "11"
+compileJava.options.encoding = "UTF-8"
+sourceSets.main.java.srcDirs = ["source"]
+sourceSets.main.resources.srcDirs = ["resources"]
+sourceSets.test.java.srcDirs = ["test"]
+jar.archiveName = "cordova-plugin-${version}.jar"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    testImplementation "org.junit.jupiter:junit-jupiter:5.6.2"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+gradlePlugin {
+    plugins {
+        macApplicationBundlePlugin {
+            id = "nl.colorize.gradle.cordova"
+            implementationClass = "nl.colorize.gradle.cordova.CordovaPlugin"
+        }
+    }
+}
+
+pluginBundle {
+    website = "http://www.colorize.nl/en/"
+    vcsUrl = "https://github.com/colorizenl/gradle-cordova-plugin"
+    description = "Gradle plugin to create Cordova applications."
+    tags = ["cordova"]
+    
+    plugins {
+        macApplicationBundlePlugin {
+            id = "nl.colorize.gradle.cordova"
+            displayName = "Gradle plugin to create Cordova applications."
+        }
+    }
+    
+    mavenCoordinates {
+        groupId = "nl.colorize"
+        artifactId = "cordova-plugin"
+    }
+}
