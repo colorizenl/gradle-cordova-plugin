@@ -19,11 +19,8 @@ public class CordovaPlugin implements Plugin<Project> {
         ext.create("cordova", CordovaExt.class);
 
         TaskContainer tasks = project.getTasks();
-        tasks.create("generateCordovaApps", GenerateCordovaAppsTask.class);
         tasks.create("buildCordova", BuildCordovaTask.class);
         tasks.create("simulateIOS", SimulateIOSTask.class);
         tasks.create("simulateAndroid", SimulateAndroidTask.class);
-
-        tasks.getByName("buildCordova").dependsOn("generateCordovaApps");
     }
 }

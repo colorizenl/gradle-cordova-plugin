@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * creates Cordova apps. This also means that Cordova and the target platforms
  * need to be available in the environment running the tests.
  */
-class GenerateCordovaAppsTaskTest {
+class BuildCordovaTaskTest {
 
     @Test
     void createDebugVersionApps() throws IOException {
@@ -72,8 +72,7 @@ class GenerateCordovaAppsTaskTest {
         config.setBuildJson(buildJsonFile.getAbsolutePath());
         config.setDist("debug");
 
-        GenerateCordovaAppsTask task = (GenerateCordovaAppsTask) project.getTasks()
-            .getByName("generateCordovaApps");
+        BuildCordovaTask task = (BuildCordovaTask) project.getTasks().getByName("generateCordovaApps");
         task.run(config);
 
         assertTrue(tempDir.exists());

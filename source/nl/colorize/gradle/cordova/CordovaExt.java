@@ -91,6 +91,10 @@ public class CordovaExt {
         this.version = version;
     }
 
+    public String getBuildVersion() {
+        return System.getProperty("buildversion", version.replace(".", ""));
+    }
+
     public String getIcon() {
         return icon;
     }

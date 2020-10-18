@@ -24,7 +24,7 @@ The plugin is available from the [Gradle plugin registry](https://plugins.gradle
 plugin to the build is done by adding the following to `build.gradle`:
 
     plugins {
-        id "nl.colorize.gradle.cordova" version "2020.1.7"
+        id "nl.colorize.gradle.cordova" version "2020.1.13"
     }
     
 The plugin adds a `buildCordova` task that will generate the applications based on the 
