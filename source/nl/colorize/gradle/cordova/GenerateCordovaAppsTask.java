@@ -9,10 +9,12 @@ package nl.colorize.gradle.cordova;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.tasks.TaskAction;
+import org.gradle.internal.impldep.org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -86,8 +88,26 @@ public class GenerateCordovaAppsTask extends DefaultTask {
 
         runCordova(config, "cordova", "plugin", "add", "cordova-plugin-wkwebview-engine");
 
-        File android = new File(outputDir.getAbsolutePath() + "/platforms/android/app/build.gradle");
-        Files.write(android.toPath(),
+        rewriteAndroidConfig(outputDir);
+    }
+
+    private void rewriteAndroidConfig(File outputDir) throws IOException {
+        File buildFile = new File(outputDir.getAbsolutePath() + "/platforms/android/build.gradle");
+
+        List<String> originalLines = FileUtils.readLines(buildFile, StandardCharsets.UTF_8);
+
+        try (PrintWriter writer = new PrintWriter(buildFile, StandardCharsets.UTF_8)) {
+            for (String line : originalLines) {
+                if (line.trim().startsWith("classpath 'com.android.tools.build:gradle:3")) {
+                    line = "classpath 'com.android.tools.build:gradle:4.0.0'";
+                }
+                writer.println(line);
+            }
+        }
+
+        File appBuildFile = new File(outputDir.getAbsolutePath() + "/platforms/android/app/build.gradle");
+
+        Files.write(appBuildFile.toPath(),
             "android.lintOptions.checkReleaseBuilds = false\n".getBytes(StandardCharsets.UTF_8),
             StandardOpenOption.APPEND);
     }
